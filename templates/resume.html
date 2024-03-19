@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}Resume Page{% endblock title %}
+{% block content %}
+{% load static %}
+<style>
+    :root {
+            --primary-color: #fc7f90;
+            --primary-color-light: #fffcfa;
+            --primary-color-dark: #db6e09;
+            --text-dark: #18181b;
+            --text-light: #6b7280;
+            --white: #ffffff;
+
+        }
+        body {
+            /* display: flex; */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #fff;
+            background-size: cover;
+            background-position: center;
+        }
+
+        html,
+        body {
+            scroll-behavior: smooth;
+        }
+    .header__content{
+        margin-top: 116px;
+    }
+    .header__content h1 {
+        margin-bottom: 1rem;
+        font-size: 3.5rem;
+        font-weight: 700;
+        line-height: 4.5rem;
+        color: var(--text-dark);
+        text-align: center;
+    }
+
+    .header__content h1 span {
+        color: var(--primary-color);
+    }
+
+    .header__content .section__description {
+        margin-bottom: 2rem;
+    }
+    .section__description {
+  color: var(--text-light);
+  line-height: 1.75rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.select-resume{
+    height: 400px;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+.select-resume a img{
+    height: 244px;
+    width: auto;
+    transition: 0.5s ease;
+}
+.select-resume a img:hover{
+    transform: scale(1.03);
+    box-shadow: 10px 10px 40px rgb(0, 0, 0, 0.5);;
+}
+.choose_h3{
+    text-align: center;
+}
+</style>
+<div class="header__content">
+    <h1>Building a digital resume? <span>Use our tool</span></h1>
+    <p class="section__description">
+        Using our tool you can build a perfect resume! Users can choose from a wide range of available templates for their resume, and can make their resume look the way they want!
+    </p>
+</div>
+<h2 class="choose_h3">Choose a template</h3>
+<div class="select-resume">
+    <a href="/resume-main"><img src="{% static 'res-temp.png' %}" alt=""></a>
+    <a href="/resume-main1"><img src="{% static 'res-temp-2.png' %}" alt=""></a>
+</div>
+{% endblock content %}

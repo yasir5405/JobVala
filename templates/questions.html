@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% block title %}Interview Practice Questions{% endblock title %}
+{% block content %}
+{% load static %}
+<style>
+    .special__grid {
+        margin-top: 4rem;
+        display: grid;
+        gap: 1rem;
+    }
+
+    .special__card {
+        padding: 1rem;
+        text-align: center;
+        border-radius: 2rem;
+        transition: 0.3s;
+    }
+
+    .special__card:hover {
+        box-shadow: 10px 10px 40px rgb(0, 0, 0, 0.1);
+    }
+
+    .special__card img {
+        max-width: 200px;
+        border-radius: 40%;
+        margin-inline: auto;
+        margin-bottom: 1rem;
+        filter: drop-shadow(10px 10px 20px rgba(0, 0, 0, 0.3));
+    }
+
+    .special__card h4 {
+        margin-bottom: .5rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-dark);
+    }
+
+    .special__card p {
+        margin-bottom: .5rem;
+        color: var(--text-light);
+        line-height: 1.75rem;
+    }
+
+    .special__ratings {
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        color: goldenrod;
+    }
+
+    .special__footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .special__footer .price {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--text-dark);
+    }
+
+    .btn4 {
+        width: 130px;
+        height: 50px;
+        background: transparent;
+        border: 2px solid black;
+        outline: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1.1em;
+        color: black;
+        font-weight: 500;
+        transition: .5s;
+    }
+
+    .btn4:hover {
+        background: black;
+        color: #fff;
+    }
+
+    @media(width > 540px) {
+        .special__grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media(width>768px) {
+        .special__grid {
+            grid-template-columns: repeat(3, 1fr)
+        }
+    }
+
+    @media(width>1024px) {
+        .special__grid {
+            gap: 2rem;
+        }
+
+        .special__card {
+            padding: 2rem;
+            border-radius: 3rem;
+        }
+    }
+
+    .section__container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 5rem 1rem;
+    }
+
+    .special__container :is(.section__header, .section__description) {
+        max-width: 600px;
+        margin-inline: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .special__container .section__header h2 {
+        font-size: 3rem;
+    }
+    .section__header {
+        margin-bottom: 1rem;
+        font-size: 2.5rem;
+        font-weight: 700;
+        line-height: 3rem;
+        color: var(--text-dark);
+        text-align: center;
+    }
+    .special__container .section__header h2 {
+        font-size: 3rem;
+    }
+</style>
+<section class="section__container special__container" id="special">
+    <h1 class="section__header">Interview Questions</h1>
+    <div class="special__grid">
+        <div class="special__card">
+            <img src="{% static 'UNC2015-Header-blue-text.png' %}" alt="">
+            <h4>University of North Colorado</h4>
+            <p>
+                Interview Questions from the University of North Colorado
+            </p>
+            
+            <div class="special__footer">
+                <a href="{% static 'resources/questions/sample-interview-questions.pdf' %}"class="btn4" style="display: flex; align-items: center; justify-content: center; text-decoration: none;" >Open</a> 
+            </div>
+        </div>
+        <div class="special__card">
+            <img src="{% static 'logo.svg' %}" alt="">
+            <h4>Mind Tools </h4>
+            <p>
+                Interview preperation questions provided by mindtools.com
+            </p>
+            
+            <div class="special__footer">
+                <a href="{% static 'resources/questions/50CommonInterviewQuestionsandAnswers.pdf' %}"class="btn4" style="display: flex; align-items: center; justify-content: center; text-decoration: none;" >Open</a> 
+            </div>
+        </div>
+        <div class="special__card">
+            <img src="{% static 'Untitled.png' %}" alt="">
+            <h4>Infycle Technologies</h4>
+            <p>
+                Interview questions provided by Infycle Technologies Ltd
+            </p>
+            
+            <div class="special__footer">
+                <a href="{% static 'resources/questions/freshers-interview-questions-answers infycle.pdf' %}"class="btn4" style="display: flex; align-items: center; justify-content: center; text-decoration: none;" >Open</a> 
+            </div>
+        </div>
+        <div class="special__card">
+            <img src="{% static 'Untitled1.png' %}" alt="">
+            <h4>Regis College Education</h4>
+            <p>
+                Interview questions provided by Regis College
+            </p>
+            
+            <div class="special__footer">
+                <a href="{% static 'resources/questions/interview-faq regis college.pdf' %}"class="btn4" style="display: flex; align-items: center; justify-content: center; text-decoration: none;" >Open</a> 
+            </div>
+        </div>
+        <div class="special__card">
+            <img src="{% static 'Untitled2.png' %}" alt="">
+            <h4>Tanesse Tech University</h4>
+            <p>
+                Interview questions provided by Tanesse Tech University
+            </p>
+            
+            <div class="special__footer">
+                <a href="{% static 'resources/questions/linked-in-interview-ebook-10-11-17-en Tanesse tech uni.pdf' %}"class="btn4" style="display: flex; align-items: center; justify-content: center; text-decoration: none;" >Open</a> 
+            </div>
+        </div>
+        <div class="special__card">
+            <img src="{% static 'Untitled3.png' %}" alt="">
+            <h4>GVS University</h4>
+            <p>
+                Interview questions provided by Grand Valley State University
+            </p>
+            
+            <div class="special__footer">
+                <a href="{% static 'resources/questions/biginterview-top-10-questions grand valley state university.pdf' %}"class="btn4" style="display: flex; align-items: center; justify-content: center; text-decoration: none;" >Open</a> 
+            </div>
+        </div>
+        <div class="special__card">
+            <img src="{% static 'Untitled4.png' %}" alt="">
+            <h4>Virginia State University</h4>
+            <p>
+                Interview questions provided by Virginia State University
+            </p>
+            
+            <div class="special__footer">
+                <a href="{% static 'resources/questions/interview-questions virginia state uni.pdf' %}"class="btn4" style="display: flex; align-items: center; justify-content: center; text-decoration: none;" >Open</a> 
+            </div>
+        </div>
+        <div class="special__card">
+            <img src="{% static 'Untitled5.png' %}" alt="">
+            <h4>Chestnut Hill College</h4>
+            <p>
+                Interview questions provided by Chestnut Hill College
+            </p>
+            
+            <div class="special__footer">
+                <a href="{% static 'resources/questions/Chestnut hill college.pdf' %}"class="btn4" style="display: flex; align-items: center; justify-content: center; text-decoration: none;" >Open</a> 
+            </div>
+        </div>
+        <div class="special__card">
+            <img src="{% static 'Untitled6.png' %}" alt="">
+            <h4>Boston University</h4>
+            <p>
+                Interview questions provided by Boston University
+            </p>
+            
+            <div class="special__footer">
+                <a href="{% static 'resources/questions/Boston Uni questions.pdf' %}"class="btn4" style="display: flex; align-items: center; justify-content: center; text-decoration: none;" >Open</a> 
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

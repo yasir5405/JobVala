@@ -1,0 +1,1760 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Landing Page{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- Chatbot -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+    
+
+    {% load static %}
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary-color: #fc7f90;
+            --primary-color-light: #fffcfa;
+            --primary-color-dark: #db6e09;
+            --text-dark: #18181b;
+            --text-light: #6b7280;
+            --white: #ffffff;
+
+        }
+
+        .section__container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 5rem 1rem;
+        }
+
+        .section__header {
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 3rem;
+            color: var(--text-dark);
+            text-align: center;
+        }
+
+        .section__description {
+            color: var(--text-light);
+            line-height: 1.75rem;
+            text-align: center;
+        }
+
+
+        body {
+            /* display: flex; */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #fff;
+            background-size: cover;
+            background-position: center;
+        }
+
+        html,
+        body {
+            scroll-behavior: smooth;
+        }
+
+        header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 2px 100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 99;
+        }
+
+        .logo {
+            font-size: 2em;
+            color: black;
+            user-select: none;
+            display: flex;
+  justify-content: center;
+  align-items: center;
+  mix-blend-mode: multiply;
+        }
+
+        .navigation a {
+            position: relative;
+            font-size: 1.1em;
+            color: black;
+            text-decoration: none;
+            font-weight: 500;
+            margin-left: 40px;
+        }
+
+        .navigation a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 100%;
+            height: 3px;
+            background: black;
+            border-radius: 5px;
+            transform-origin: right;
+            transform: scaleX(0);
+            transition: transform .5s;
+        }
+
+        .navigation a:hover::after {
+            transform-origin: left;
+            transform: scaleX(1);
+        }
+
+        .navigation .btnLogin-popup {
+            width: 130px;
+            height: 50px;
+            background: transparent;
+            border: 2px solid black;
+            outline: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            color: black;
+            font-weight: 500;
+            margin-left: 40px;
+            transition: .5s;
+        }
+
+        .navigation .btnLogin-popup:hover {
+            background: black;
+            color: #fff;
+        }
+
+        .wrapper {
+            position: absolute;
+            width: 400px;
+            height: 440px;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, .5);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 30px rgba(0, 0, 0, .5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            transform: scale(0);
+            transition: transform .5s ease, height .2s ease;
+            z-index: 9999;
+            /* added later after deleting flex from body */
+            margin-left: 579px;
+        }
+
+        .wrapper.active-popup {
+            transform: scale(1);
+        }
+
+        .wrapper.active {
+            height: 520px;
+        }
+
+        .wrapper .form-box {
+            width: 100%;
+            padding: 40px;
+        }
+
+        .wrapper .form-box.login {
+            transition: transform .18s ease;
+            transform: translateX(0);
+        }
+
+        .wrapper.active .form-box.login {
+            transition: none;
+            transform: translateX(-400px);
+        }
+
+        .wrapper .form-box.register {
+            position: absolute;
+            transition: none;
+            transform: translateX(400px);
+        }
+
+        .wrapper.active .form-box.register {
+            transition: transform .18s ease;
+            transform: translateX(0);
+        }
+
+        .wrapper .icon-close {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 45px;
+            height: 45px;
+            background: #162938;
+            font-size: 2em;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom-left-radius: 20px;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .form-box h2 {
+            font-size: 2em;
+            color: #162938;
+            text-align: center;
+        }
+
+        .input-box {
+            position: relative;
+            width: 100%;
+            height: 50px;
+            border-bottom: 2px solid #162938;
+            margin: 30px 0;
+        }
+
+        .input-box label {
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            transform: translateY(-50%);
+            font-size: 1em;
+            color: #162938;
+            font-weight: 500;
+            pointer-events: none;
+            transition: .5s;
+        }
+
+        .input-box input:focus~label,
+        .input-box input:valid~label {
+            top: -5px;
+        }
+
+        .input-box input {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 1em;
+            color: #162938;
+            font-weight: 600;
+            padding: 0 35px 0 5px;
+        }
+
+        .input-box .icon {
+            position: absolute;
+            right: 8px;
+            font-size: 1.2em;
+            color: #162938;
+            line-height: 57px;
+        }
+
+        .remember-forgot {
+            font-size: .9em;
+            color: #162938;
+            font-weight: 500;
+            margin: -15px 0 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .remember-forgot label input {
+            accent-color: #162938;
+            margin-right: 3px;
+        }
+
+        .remember-forgot a {
+            color: #f1f1f1;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .remember-forgot a:hover {
+            text-decoration: underline;
+        }
+
+        .btn {
+            width: 100%;
+            height: 45px;
+            background: #162938;
+            border: none;
+            outline: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background: #162938;
+            color: #fff;
+        }
+
+        .login-register {
+            font-size: .9em;
+            color: #162938;
+            text-align: center;
+            font-weight: 500;
+            margin: 25px 0 10px;
+        }
+
+        .login-register p a {
+            color: #162938;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-register p a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* New Form */
+        .newform {
+            position: absolute;
+            width: 400px;
+            height: 440px;
+            background: transparent;
+            /* border: 2px solid black; */
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: -936px;
+        }
+
+        .newform .newform1 {
+            width: 100%;
+            padding: 40px;
+        }
+
+        .newform .newform1 h2 {
+            font-size: 2em;
+            color: #162938;
+            text-align: center;
+        }
+
+        .input-dabba {
+            position: relative;
+            width: 100%;
+            height: 50px;
+            margin: 30px 0;
+        }
+
+        .input-dabba input {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: 1px solid black;
+            border-radius: 5px;
+            outline: none;
+            font-size: 1em;
+            color: #162938;
+            font-weight: 600;
+            padding: 0 35px 0 5px;
+        }
+
+        .input-dabba .icon {
+            position: absolute;
+            right: 8px;
+            font-size: 1.2em;
+            color: #162938;
+            line-height: 57px;
+        }
+
+        .btn1 {
+            width: 100%;
+            height: 45px;
+            background: #162938;
+            border: none;
+            outline: none;
+            border-radius: 26px;
+            cursor: pointer;
+            font-size: 1em;
+            color: #fff;
+            font-weight: 500;
+            margin-top: 32px;
+        }
+
+        .btn2 {
+            width: 100%;
+            height: 45px;
+            background: #162938;
+            border: none;
+            outline: none;
+            border-radius: 26px;
+            cursor: pointer;
+            font-size: 1em;
+            color: #fff;
+            font-weight: 500;
+            margin-top: 16px;
+        }
+
+        .login-re {
+            font-size: .9em;
+            color: #162938;
+            text-align: center;
+            font-weight: 500;
+            margin: 25px 0 -6px;
+        }
+
+        .login-re p a {
+            color: #162938;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-re p a:hover {
+            text-decoration: underline;
+        }
+
+        /* Message popup for account creation */
+        .container1 {
+            width: 100%;
+            height: 100px;
+            /* border: 2px solid black; */
+            margin-left: 0px;
+            margin-top: -460px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        .alert-warning {
+            margin-left: 27px;
+            margin-top: -53px;
+        }
+
+        /* Landing Page */
+        .header__container {
+            display: grid;
+            gap: 2rem;
+            overflow: hidden;
+            padding: 41px;
+            margin-top: 137px;
+            /* added to reshape */
+        }
+
+        .header__image img {
+            max-width: 600px;
+            margin-inline: auto;
+            max-height: 600px;
+            border-radius: 14%;
+            display: flex;
+            align-items: center;
+        }
+
+        .header__btn .btnLogin-popup1 {
+            width: 130px;
+            height: 50px;
+            background: transparent;
+            border: 2px solid black;
+            outline: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            color: black;
+            font-weight: 500;
+            transition: .5s;
+        }
+
+        .header__btn .btnLogin-popup1:hover {
+            background: black;
+            color: #fff;
+        }
+
+        .header__content h1 {
+            margin-bottom: 1rem;
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 4.5rem;
+            color: var(--text-dark);
+            text-align: center;
+        }
+
+        .header__content h1 span {
+            color: var(--primary-color);
+        }
+
+        .header__content .section__description {
+            margin-bottom: 2rem;
+        }
+
+        .header__btn {
+            text-align: center;
+        }
+
+        .btn4 {
+            width: 130px;
+            height: 50px;
+            background: transparent;
+            border: 2px solid black;
+            outline: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            color: black;
+            font-weight: 500;
+            transition: .5s;
+        }
+
+        .btn4:hover {
+            background: black;
+            color: #fff;
+        }
+
+        .special__container :is(.section__header, .section__description) {
+            max-width: 600px;
+            margin-inline: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .special__container .section__header h2 {
+            font-size: 3rem;
+        }
+
+        .special__grid {
+            margin-top: 4rem;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .special__card {
+            padding: 1rem;
+            text-align: center;
+            border-radius: 2rem;
+            transition: 0.3s;
+        }
+
+        .special__card:hover {
+            box-shadow: 10px 10px 40px rgb(0, 0, 0, 0.1);
+        }
+
+        .special__card img {
+            max-width: 200px;
+            border-radius: 40%;
+            margin-inline: auto;
+            margin-bottom: 1rem;
+            filter: drop-shadow(10px 10px 20px rgba(0, 0, 0, 0.3));
+        }
+
+        .special__card h4 {
+            margin-bottom: .5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .special__card p {
+            margin-bottom: .5rem;
+            color: var(--text-light);
+            line-height: 1.75rem;
+        }
+
+        .special__ratings {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: goldenrod;
+        }
+
+        .special__footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .special__footer .price {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .explore__container {
+            display: grid;
+            gap: 2rem;
+            overflow: hidden;
+            /* margin-bottom: 79px;
+            margin-top: 10px; */
+        }
+
+        .explore__image img {
+            max-width: 400px;
+            margin-inline: auto;
+            filter: drop-shadow(0 0 50px rgba(252, 127, 9, 0.4));
+            align-items: center;
+            display: flex;
+        }
+
+
+        .explore__content .section__description {
+            margin-bottom: 2rem;
+        }
+
+        .explore__btn {
+            text-align: center;
+        }
+
+        .banner__container {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .banner__card {
+            padding: 2rem;
+            box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 3rem;
+            transition: 0.3s;
+        }
+
+        .banner__card:hover {
+            box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .banner__card .banner__icon {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 5px 11px;
+            font-size: 2rem;
+            color: var(--white);
+            border-radius: 1rem;
+        }
+
+        .banner__card:nth-child(1) .banner__icon {
+            background-color: #62b15c;
+            box-shadow: 5px 5px 30px #62b15cd0;
+        }
+
+        .banner__card:nth-child(2) .banner__icon {
+            background-color: #ff3e67;
+            box-shadow: 5px 5px 30px #ff3e67d0;
+        }
+
+        .banner__card:nth-child(3) .banner__icon {
+            background-color: #195adb;
+            box-shadow: 5px 5px 30px #195adbd0;
+        }
+
+        .banner__card h4 {
+            margin-bottom: .5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .banner__card p {
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            line-height: 1.75rem;
+        }
+
+        .banner__card a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 500;
+            color: var(--primary-color);
+        }
+
+        .banner__card a span {
+            font-size: 1.25rem;
+            transition: 0.3s;
+        }
+
+        .banner__card a:hover span {
+            transform: translateX(10px);
+        }
+
+        .chef {
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+        }
+
+        .chef__bg {
+            position: absolute;
+            z-index: -1;
+            max-width: 275px;
+            left: -4rem;
+            bottom: -2rem;
+        }
+
+        .chef__container {
+            padding-bottom: 10rem;
+            display: grid;
+            gap: 2rem;
+            /* margin-top: 46px; */
+        }
+
+        .chef__content .section__description {
+            margin-bottom: 1rem;
+        }
+
+        .chef__image {
+            text-align: center;
+            position: relative;
+            isolation: isolate;
+        }
+
+        .chef__image img {
+            max-width: 500px;
+            border-radius: 100%;
+            margin-inline: auto;
+        }
+
+        .chef__image::after {
+            position: absolute;
+            content: "";
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 100%;
+            width: 100%;
+            max-width: 500px;
+            background-color: var(--primary-color);
+            border-radius: 100%;
+            z-index: -1;
+        }
+
+        .chef__list {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .chef__list li {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .chef__list li span {
+            font-size: 1.5rem;
+        }
+
+        .chef__list li:nth-child(1) span {
+            color: #62b15c;
+        }
+
+        .chef__list li:nth-child(2) span {
+            color: #ff3e67;
+        }
+
+        .chef__list li:nth-child(3) span {
+            color: #185adb;
+        }
+
+        .client__container {
+            padding-top: 0;
+        }
+
+        .client__container :is(.section__header, .section__description) {
+            max-width: 600px;
+            margin-inline: auto;
+            text-align: center;
+        }
+
+        .client__swiper {
+            margin-top: 2rem;
+            max-width: 750px;
+            margin-inline: auto;
+            padding: 3rem 1rem;
+            overflow: hidden;
+            border: 2px solid rgba(252, 127, 9, 0.5);
+            box-shadow: 5px 5px 30px rgba(252, 127, 9, 0.2);
+            border-radius: 3rem;
+        }
+
+        .swiper {
+            padding-bottom: 3rem;
+            width: 100%;
+        }
+
+        .client__card {
+            text-align: center;
+        }
+
+        .client__card p {
+            margin-bottom: 2rem;
+            color: var(--text-dark);
+            line-height: 1.75rem;
+        }
+
+        .client__card img {
+            margin-bottom: 1rem;
+            max-width: 70px;
+            margin-inline: auto;
+            border-radius: 100%;
+            box-shadow: 5px 5px 20px rgba(0, 0, 0, .2);
+        }
+
+        .client__card h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .client__card h5 {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        .swiper-pagination-bullet-active {
+            background-color: var(--primary-color);
+        }
+
+        .footer {
+            background-color: var(--primary-color-light);
+        }
+
+        .footer__container {
+            display: grid;
+            gap: 4rem 2rem;
+            /* margin-top: 78px; */
+        }
+
+        .footer__logo {
+            margin-bottom: 1rem;
+        }
+
+        .footer__col .section__description {
+            text-align: left;
+        }
+
+        .footer__col h4 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .footer__links {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .footer__links a {
+            color: var(--text-light);
+        }
+
+        .footer__links a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer__bar {
+            padding: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        @media(width > 540px) {
+            .special__grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .banner__container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer__container {
+                grid-template-columns: 3fr 2fr;
+            }
+        }
+
+        @media (width > 768px) {
+            .header__container {
+                grid-template-columns: 2fr 3fr;
+                align-items: center;
+            }
+
+            .header__content h1,
+            .header__content .section__description,
+            .header__btn {
+                text-align: left;
+            }
+
+            .header__image {
+                grid-area: 1/2/2/3;
+            }
+
+            .special__grid {
+                grid-template-columns: repeat(3, 1fr)
+            }
+
+            .explore__container {
+                grid-template-columns: repeat(2, 1fr);
+                align-items: center;
+                padding-top: 29px;
+                padding-bottom: 137px;
+                /* margin-top: 39px;
+                margin-bottom: 79px; */
+            }
+
+            .explore__content .section__header {
+                max-width: 500px;
+            }
+
+            .explore__content :is(.section__header, .section__description),
+            .explore__btn {
+                text-align: left;
+            }
+
+            .banner__container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .chef__bg {
+                max-width: 300px;
+            }
+
+            .chef__container {
+                align-items: center;
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .chef__image {
+                grid-area: 1/2/2/3;
+            }
+
+            .chef__content :is(.section__header, .section__description) {
+                text-align: left;
+            }
+
+            .chef__list li {
+                justify-content: flex-start;
+            }
+
+            .client__swiper {
+                padding: 3rem 2rem;
+            }
+
+            .footer__container {
+                grid-template-columns: 2fr repeat(3, 1fr);
+                margin-bottom: -76px;
+            }
+        }
+
+        @media(width>1024px) {
+            .special__grid {
+                gap: 2rem;
+            }
+
+            .special__card {
+                padding: 2rem;
+                border-radius: 3rem;
+            }
+
+            .banner__container {
+                gap: 2rem;
+            }
+
+            .chef__bg {
+                max-width: 375px;
+            }
+        }
+
+        /* chatbot */
+        .chatbot-toggler {
+            position: fixed;
+            bottom: 30px;
+            right: 35px;
+            outline: none;
+            border: none;
+            height: 50px;
+            width: 50px;
+            display: flex;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #724ae8;
+            transition: all 0.2s ease;
+        }
+
+        body.show-chatbot .chatbot-toggler {
+            transform: rotate(90deg);
+        }
+
+        .chatbot-toggler span {
+            color: #fff;
+            position: absolute;
+        }
+
+        .chatbot-toggler span:last-child,
+        body.show-chatbot .chatbot-toggler span:first-child {
+            opacity: 0;
+        }
+
+        body.show-chatbot .chatbot-toggler span:last-child {
+            opacity: 1;
+        }
+
+        .chatbot {
+            position: fixed;
+            right: 35px;
+            bottom: 90px;
+            width: 420px;
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.5);
+            transform-origin: bottom right;
+            box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1),
+                0 32px 64px -48px rgba(0, 0, 0, 0.5);
+            transition: all 0.1s ease;
+        }
+
+        body.show-chatbot .chatbot {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+        }
+
+        .chatbot header {
+            padding: 16px 0;
+            position: relative;
+            text-align: center;
+            color: #fff;
+            background: #724ae8;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .chatbot header span {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            display: none;
+            cursor: pointer;
+            transform: translateY(-50%);
+        }
+
+        header h2 {
+            font-size: 1.4rem;
+        }
+
+        .chatbot .chatbox {
+            overflow-y: auto;
+            height: 416px;
+            padding: 30px 20px 100px;
+        }
+
+        .chatbot :where(.chatbox, textarea)::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chatbot :where(.chatbox, textarea)::-webkit-scrollbar-track {
+            background: #fff;
+            border-radius: 25px;
+        }
+
+        .chatbot :where(.chatbox, textarea)::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 25px;
+        }
+
+        .chatbox .chat {
+            display: flex;
+            list-style: none;
+        }
+
+        .chatbox .outgoing {
+            margin: 20px 0;
+            justify-content: flex-end;
+        }
+
+        .chatbox .incoming span {
+            width: 32px;
+            height: 32px;
+            color: #fff;
+            cursor: default;
+            text-align: center;
+            line-height: 32px;
+            align-self: flex-end;
+            background: #724ae8;
+            border-radius: 4px;
+            margin: 0 10px 7px 0;
+        }
+
+        .chatbox .chat p {
+            white-space: pre-wrap;
+            padding: 12px 16px;
+            border-radius: 10px 10px 0 10px;
+            max-width: 75%;
+            color: #fff;
+            font-size: 0.95rem;
+            background: #724ae8;
+        }
+
+        .chatbox .incoming p {
+            border-radius: 10px 10px 10px 0;
+        }
+
+        .chatbox .chat p.error {
+            color: #721c24;
+            background: #f8d7da;
+        }
+
+        .chatbox .incoming p {
+            color: #000;
+            background: #f2f2f2;
+        }
+
+        .chatbot .chat-input {
+            display: flex;
+            gap: 5px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: #fff;
+            padding: 3px 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        .chat-input textarea {
+            height: 55px;
+            width: 100%;
+            border: none;
+            outline: none;
+            resize: none;
+            max-height: 180px;
+            padding: 15px 15px 15px 0;
+            font-size: 0.95rem;
+        }
+
+        .chat-input span {
+            align-self: flex-end;
+            color: #724ae8;
+            cursor: pointer;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            visibility: hidden;
+            font-size: 1.35rem;
+        }
+
+        .chat-input textarea:valid~span {
+            visibility: visible;
+        }
+
+        @media (max-width: 490px) {
+            .chatbot-toggler {
+                right: 20px;
+                bottom: 20px;
+            }
+
+            .chatbot {
+                right: 0;
+                bottom: 0;
+                height: 100%;
+                border-radius: 0;
+                width: 100%;
+            }
+
+            .chatbot .chatbox {
+                height: 90%;
+                padding: 25px 15px 100px;
+            }
+
+            .chatbot .chat-input {
+                padding: 5px 15px;
+            }
+
+            .chatbot header span {
+                display: block;
+            }
+        }
+        .logo img{
+            width: 88px;
+  height: auto;
+  border-radius: 19px;
+  mix-blend-mode: multiply;
+
+        }
+        .footer__logo a{
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+        .footer__logo a span{
+            color: var(--primary-color);
+        }
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <h2 class="logo">Job <span style="color: #fc7f90;">Vala</span> <span><img src='{% static "Designer(2).png" %}' alt=""></span></h2>
+        <nav class="navigation">
+            <a href="/about">About us</a>
+            <a href="/resources">Resources</a>
+            <a href="/contact">Contact us</a>
+            <button class="btnLogin-popup">Login</button>
+        </nav>
+    </header>
+    <!-- <div class="container1">
+        {% for msg in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong></strong> {{msg}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div> -->
+    <div class="wrapper">
+        <span class="icon-close"><ion-icon name="close"></ion-icon></span>
+
+        <div class="form-box login">
+            <h2>Login</h2>
+            <form method="post" action="{% url 'submitform' %}">
+                {% csrf_token %}
+                <div class="input-box">
+                    <span class="icon">
+                        <ion-icon name="mail"></ion-icon>
+                    </span>
+                    <input type="text" name="username" id="" required>
+                    <label for="email">Username</label>
+                </div>
+                <div class="input-box">
+                    <span class="icon">
+                        <ion-icon name="lock-closed"></ion-icon>
+                    </span>
+                    <input type="password" name="pass" id="" required>
+                    <label for="email">Password</label>
+                </div>
+                <div class="remember-forgot">
+                    <label for=""><input type="checkbox"> Remember me</label>
+                    <a href="#">Forgot Password</a>
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <div class="login-register">
+                    <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
+                </div>
+            </form>
+        </div>
+
+        <div class="form-box register">
+            <h2>Register</h2>
+            <form method="post" action="">
+                {% csrf_token %}
+                <div class="input-box">
+                    <span class="icon">
+                        <ion-icon name="mail"></ion-icon>
+                    </span>
+                    <input type="text" name="username" id="" required>
+                    <label for="email">Username</label>
+                </div>
+                <div class="input-box">
+                    <span class="icon">
+                        <ion-icon name="lock-closed"></ion-icon>
+                    </span>
+                    <input type="password" name="password1" id="" required>
+                    <label for="">Password</label>
+                </div>
+                <div class="input-box">
+                    <span class="icon">
+                        <ion-icon name="lock-closed"></ion-icon>
+                    </span>
+                    <input type="password" name="password2" id="" required>
+                    <label for="">Confirm Password</label>
+                </div>
+                <div class="remember-forgot">
+                    <label for=""><input type="checkbox"> Agree to the terms & conditions</label>
+                </div>
+                <button type="submit" class="btn">Register</button>
+                <div class="login-register">
+                    <p>Already a user? <a href="#" class="login-link">Login</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="section__container header__container" id="home">
+        <div class="header__image">
+            <img src="{% static 'Designer_3_-removebg-preview.png' %}" alt="">
+        </div>
+        <div class="header__content">
+            <h1>Looking for opportunities? <span>Get Aboard!</span></h1>
+            <p class="section__description">
+                "We are not just for job seekers. We are a platform for building your personal brand and establishing
+                yourself as a thought leader."
+            </p>
+            <div class="header__btn">
+                <button class="btnLogin-popup1">Register Now!</button>
+            </div>
+        </div>
+    </div>
+    <section class="section__container special__container" id="special">
+        <h1 class="section__header">Our Strength</h1>
+        <p class="section__description">
+            Each job listing promises an easy application experience, blending innovation with the existing
+            technologies.
+        </p>
+        <div class="special__grid">
+            <div class="special__card">
+                <img src="{% static 'kobu-agency-7okkFhxrxNw-unsplash(1).jpg' %}" alt="">
+                <h4>Results from top boards</h4>
+                <p>
+                    The job listing of top job boards listed on our website, saving you time so you don't have to search
+                    on those websites individually
+                </p>
+                <div class="special__ratings">
+                    <span><ion-icon name="star"></ion-icon></span>
+                    <span><ion-icon name="star"></ion-icon></span>
+                    <span><ion-icon name="star"></ion-icon></span>
+                    <span><ion-icon name="star"></ion-icon></span>
+                    <span><ion-icon name="star"></ion-icon></span>
+                </div>
+            </div>
+            <div class="special__card">
+                <img src="{% static 'marvin-meyer-SYTO3xs06fU-unsplash.jpg' %}" alt="">
+                <h4>Highly rated by critiques</h4>
+                <p>
+                    We have been rated as one of the top job board platform by many well renowned critiques and we have
+                    been featured on many magazines!
+                </p>
+                <div class="special__ratings">
+                    <span><ion-icon name="star"></ion-icon></span>
+                    <span><ion-icon name="star"></ion-icon></span>
+                    <span><ion-icon name="star"></ion-icon></span>
+                    <span><ion-icon name="star"></ion-icon></span>
+                    <span><ion-icon name="star"></ion-icon></span>
+                </div>
+            </div>
+            <div class="special__card">
+                <img src="{% static 'headway-5QgIuuBxKwM-unsplash.jpg' %}" alt="">
+                <h4>Build you own resume</h4>
+                <p>
+                    We provide a range of selectable of resume template options that you can choose from and make your
+                    own resume!
+                </p>
+                <div class="special__ratings">
+                    <span><ion-icon name="star"></ion-icon></span>
+                    <span><ion-icon name="star"></ion-icon></span>
+                    <span><ion-icon name="star"></ion-icon></span>
+                    <span><ion-icon name="star"></ion-icon></span>
+                    <span><ion-icon name="star"></ion-icon></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section__container explore__container">
+        <div class="explore__image">
+            <img src="{% static 'hunters-race-MYbhN8KaaEc-unsplash-removebg-preview.png' %}" alt="explore">
+        </div>
+        <div class="explore__content">
+            <h1 class="section__header">We offer the best job preparing resources</h1>
+            <p class="section__description">
+                Our website offers you the best job preparation resources out there, whether it be interview questions, mock preperations or interview preparation handbooks.
+            </p>
+            <div class="explore__btn">
+                <button class="btn4" >
+                    <a href="/resources"></a>Explore <span><ion-icon name="arrow-forward-outline"></ion-icon></span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="section__container banner__container">
+        <div class="banner__card">
+            <span class="banner__icon"><ion-icon name="construct"></ion-icon></span>
+            <h4>Apply for jobs</h4>
+            <p>
+                You can apply from the homepage, without the hassle of navigating through multiple job boarding websites
+                and save a lot of your precious time.
+            </p>
+            
+        </div>
+        <div class="banner__card">
+            <span class="banner__icon"><ion-icon name="document"></ion-icon></span>
+            <h4>Get hired</h4>
+            <p>
+                We offer a seamless job searching experience by presenting all the job postings in one page infront of
+                you so you dont have to go through all of the different websites, and get hired!
+            </p>
+            
+        </div>
+        <div class="banner__card">
+            <span class="banner__icon"><ion-icon name="happy"></ion-icon></span>
+            <h4>Save your time</h4>
+            <p>
+                We offer great search functinalities with keywords such as the job location, job type, expected salary,
+                job title, experience, academic achievments.
+            </p>
+        </div>
+    </section>
+
+    <section class="chef" id="chef">
+        <!-- <img src="{% static 'hunters-race-MYbhN8KaaEc-unsplash-removebg-preview.png' %}" alt="" class="chef__bg"> -->
+        <div class="section__container chef__container">
+            <div class="chef__image">
+                <img src="{% static 'hunters-race-MYbhN8KaaEc-unsplash-removebg-preview.png' %}" alt="">
+            </div>
+            <div class="chef__content">
+                <h2 class="section__header">From the best of the world</h2>
+                <p class="section__description">
+                    Our job boards has multiple jobs offerings listed of the top companies of the planetm. We offer
+                    great help if you want to join a big tech company.
+                </p>
+                <ul class="chef__list">
+                    <li>
+                        <span><ion-icon name="checkbox"></ion-icon></span>
+                        Recommed by the Top Job Boards
+                    </li>
+                    <li>
+                        <span><ion-icon name="checkbox"></ion-icon></span>
+                        Easy application for jobs
+                    </li>
+                    <li>
+                        <span><ion-icon name="checkbox"></ion-icon></span>
+                        Easy to use resume builder
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="section__container client__container" id="client">
+        <h2 class="section__header">What our customers are saying</h2>
+        <p class="section__description">
+            We have recieved great reviews by customers showing their satisfaction on how easy it became for them to
+            land a job after using our services. Be a part of our big community!
+        </p>
+        <div class="client__swiper">
+            <!-- Slider main container -->
+            <div class="swiper">
+                <!-- Additional required wrapper -->
+                <div class="swiper-wrapper">
+                    <!-- Slides -->
+                    <div class="swiper-slide">
+                        <div class="client__card">
+                            <p>
+                                "I've been using this job board for a few months now, and I must say it's been a game-changer for me. The interface is user-friendly, making it easy to navigate through job listings. What I appreciate the most is the variety of jobs available here. Whether you're looking for entry-level positions or senior roles, there's something for everyone. Plus, the application process is seamless, saving me a lot of time. Highly recommended!"
+                            </p>
+                            <img src="{% static 'hunters-race-MYbhN8KaaEc-unsplash-removebg-preview.png' %}"
+                                alt="client">
+                            <h4>John Deff</h4>
+                            <h5>Business Executive</h5>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="client__card">
+                            <p>
+                                "As a recent graduate, finding a job felt like navigating a maze until I stumbled upon this job board. The platform is incredibly intuitive, and I found the filtering options particularly helpful. It allowed me to narrow down my search based on location, industry, and job type, which streamlined the process. Moreover, the job alerts feature kept me updated on new opportunities matching my criteria. Thanks to this platform, I landed my dream job within weeks of graduation. Kudos to the team behind it!"
+                            </p>
+                            <img src="{% static 'my-profile.png' %}" alt="client">
+                            <h4>Yasir Naseem</h4>
+                            <h5>Business Executive</h5>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="client__card">
+                            <p>
+                                "I've been in the job market for a while, and I've tried numerous job boards, but none compare to this one. What sets it apart is the quality of listings. Unlike other platforms cluttered with spam or outdated postings, this one maintains a high standard, ensuring that every listing is legitimate and relevant. Additionally, the personalized recommendations based on my profile helped me discover opportunities I wouldn't have found otherwise. Thanks to this job board, I secured a position at a reputable company, and I couldn't be happier. 5 stars without a doubt!"
+                            </p>
+                            <img src="{% static 'balli_loda-removebg-preview.png' %}" alt="client">
+                            <h4>Baltej Randhawa</h4>
+                            <h5>Business Executive</h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- If we need pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </section>
+
+    <hr>
+
+    <footer class="footer" id="contact">
+        <div class="section__container footer__container">
+            <div class="footer__col">
+                <div class="logo footer__logo">
+                    <a href="#">Job<span>Vala</span> <img src='{% static "Designer(2).png" %}' alt=""></a>
+                </div>
+                <p class="section__description">
+                    We are the job board that actually helps out job-seekers and the employers alike. Had a headache earlier looking for jobs, scrolling through multiple websites, and still couldn't find a perfect job? No worries! No need to scroll through multiple websites anymore! Wanna start? Hop in NOW!
+                </p>
+            </div>
+            <div class="footer__col">
+                <h4>Product</h4>
+                <ul class="footer__links">
+                    <li><a href="/resume">Resume Maker</a></li>
+                    <li><a href="/resources">Resources</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4>Information</h4>
+                <ul class="footer__links">
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bar">
+            Copyright © 2024 JobVala. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Chatbot -->
+    <button class="chatbot-toggler">
+        <span class="material-symbols-rounded">mode_comment</span>
+        <span class="material-symbols-outlined">close</span>
+    </button>
+    <div class="chatbot">
+        <header style="display: flex; align-items: center; justify-content: center;">
+            <h2>JobBot</h2>
+            <span class="close-btn material-symbols-outlined">close</span>
+        </header>
+        <ul class="chatbox">
+            <li class="chat incoming">
+                <span class="material-symbols-outlined">smart_toy</span>
+                <p>Hi there 👋<br>How can I help you today?</p>
+            </li>
+        </ul>
+        <div class="chat-input">
+            <textarea placeholder="Enter a message..." spellcheck="false" required></textarea>
+            <span id="send-btn" class="material-symbols-rounded">send</span>
+        </div>
+    </div>
+
+
+
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script>
+        const wrapper = document.querySelector('.wrapper');
+        const loginLink = document.querySelector('.login-link');
+        const registerLink = document.querySelector('.register-link');
+        const btnPopup = document.querySelector('.btnLogin-popup');
+        const iconClose = document.querySelector('.icon-close');
+        const RegInNow = document.querySelector('.btnLogin-popup1');
+        const registerNow = document.querySelector('.register-link');
+
+        registerLink.addEventListener('click', () => {
+            wrapper.classList.add('active');
+        });
+
+        loginLink.addEventListener('click', () => {
+            wrapper.classList.remove('active');
+        });
+        btnPopup.addEventListener('click', () => {
+            wrapper.classList.add('active-popup');
+        });
+        RegInNow.addEventListener('click', () => {
+            wrapper.classList.add('active-popup');
+        });
+        iconClose.addEventListener('click', () => {
+            wrapper.classList.remove('active-popup');
+        });
+
+
+        //Landing Page
+        const swiper = new Swiper(".swiper", {
+            loop: true,
+
+            pagination: {
+                el: ".swiper-pagination",
+            },
+        });
+
+
+
+        const scrollRevealOption = {
+            distance: "50px",
+            origin: "bottom",
+            duration: 1000,
+        };
+        ScrollReveal().reveal(".header__image img", {
+            ...scrollRevealOption,
+            origin: "right",
+        })
+        ScrollReveal().reveal(".header__content h1", {
+            ...scrollRevealOption,
+            delay: 500,
+        })
+        ScrollReveal().reveal(".header__content .section__description", {
+            ...scrollRevealOption,
+            delay: 1000,
+        })
+        ScrollReveal().reveal(".header__content .header__btn", {
+            ...scrollRevealOption,
+            delay: 1500,
+        })
+
+        ScrollReveal().reveal(".explore__image img", {
+            ...scrollRevealOption,
+            origin: "left",
+        })
+        ScrollReveal().reveal(".explore__content .section__header", {
+            ...scrollRevealOption,
+            delay: 500,
+        })
+        ScrollReveal().reveal(".explore__content .section__description", {
+            ...scrollRevealOption,
+            delay: 1000,
+        })
+        ScrollReveal().reveal(".explore__content .explore__btn", {
+            ...scrollRevealOption,
+            delay: 1500,
+        })
+
+        ScrollReveal().reveal('.banner__card', {
+            ...scrollRevealOption,
+            interval: 500,
+        })
+
+
+        ScrollReveal().reveal(".chef__image img", {
+            ...scrollRevealOption,
+            origin: "right",
+        })
+        ScrollReveal().reveal(".chef__content .section__header", {
+            ...scrollRevealOption,
+            delay: 500,
+        })
+        ScrollReveal().reveal(".chef__content .section__description", {
+            ...scrollRevealOption,
+            delay: 1000,
+        })
+        ScrollReveal().reveal(".chef__list li", {
+            ...scrollRevealOption,
+            delay: 1500,
+            interval: 500,
+        })
+
+        //Chatbot
+        const chatbotToggler = document.querySelector(".chatbot-toggler");
+        const closeBtn = document.querySelector(".close-btn");
+        const chatbox = document.querySelector(".chatbox");
+        const chatInput = document.querySelector(".chat-input textarea");
+        const sendChatBtn = document.querySelector(".chat-input span");
+
+        let userMessage = null; // Variable to store user's message
+        const API_KEY = "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"; // Paste your API key here
+        const inputInitHeight = chatInput.scrollHeight;
+
+        const createChatLi = (message, className) => {
+            // Create a chat <li> element with passed message and className
+            const chatLi = document.createElement("li");
+            chatLi.classList.add("chat", `${className}`);
+            let chatContent = className === "outgoing" ? `<p></p>` : `<span class="material-symbols-outlined">smart_toy</span><p></p>`;
+            chatLi.innerHTML = chatContent;
+            chatLi.querySelector("p").textContent = message;
+            return chatLi; // return chat <li> element
+        }
+
+        const generateResponse = (chatElement) => {
+            const API_URL = "https://api.openai.com/v1/chat/completions";
+            const messageElement = chatElement.querySelector("p");
+
+            // Define the properties and message for the API request
+            const requestOptions = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: "gpt-3.5-turbo",
+                    messages: [{ role: "user", content: userMessage }],
+                })
+            }
+
+            // Send POST request to API, get response and set the reponse as paragraph text
+            fetch(API_URL, requestOptions).then(res => res.json()).then(data => {
+                messageElement.textContent = data.choices[0].message.content.trim();
+            }).catch(() => {
+                messageElement.classList.add("error");
+                messageElement.textContent = "Oops! Something went wrong. Please try again.";
+            }).finally(() => chatbox.scrollTo(0, chatbox.scrollHeight));
+        }
+
+        const handleChat = () => {
+            userMessage = chatInput.value.trim(); // Get user entered message and remove extra whitespace
+            if (!userMessage) return;
+
+            // Clear the input textarea and set its height to default
+            chatInput.value = "";
+            chatInput.style.height = `${inputInitHeight}px`;
+
+            // Append the user's message to the chatbox
+            chatbox.appendChild(createChatLi(userMessage, "outgoing"));
+            chatbox.scrollTo(0, chatbox.scrollHeight);
+
+            setTimeout(() => {
+                // Display "Thinking..." message while waiting for the response
+                const incomingChatLi = createChatLi("Thinking...", "incoming");
+                chatbox.appendChild(incomingChatLi);
+                chatbox.scrollTo(0, chatbox.scrollHeight);
+                generateResponse(incomingChatLi);
+            }, 600);
+        }
+
+        chatInput.addEventListener("input", () => {
+            // Adjust the height of the input textarea based on its content
+            chatInput.style.height = `${inputInitHeight}px`;
+            chatInput.style.height = `${chatInput.scrollHeight}px`;
+        });
+
+        chatInput.addEventListener("keydown", (e) => {
+            // If Enter key is pressed without Shift key and the window 
+            // width is greater than 800px, handle the chat
+            if (e.key === "Enter" && !e.shiftKey && window.innerWidth > 800) {
+                e.preventDefault();
+                handleChat();
+            }
+        });
+
+        sendChatBtn.addEventListener("click", handleChat);
+        closeBtn.addEventListener("click", () => document.body.classList.remove("show-chatbot"));
+        chatbotToggler.addEventListener("click", () => document.body.classList.toggle("show-chatbot"));
+
+
+    </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+
+    <!-- script for landing page -->
+
+</body>
+
+</html>

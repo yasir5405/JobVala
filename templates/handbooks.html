@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% block title %}Mock Interview Resources{% endblock title %}
+{% block content %}
+{% load static %}
+<style>
+    .special__grid {
+        margin-top: 4rem;
+        display: grid;
+        gap: 1rem;
+    }
+
+    .special__card {
+        padding: 1rem;
+        text-align: center;
+        border-radius: 2rem;
+        transition: 0.3s;
+    }
+
+    .special__card:hover {
+        box-shadow: 10px 10px 40px rgb(0, 0, 0, 0.1);
+    }
+
+    .special__card img {
+        max-width: 200px;
+        border-radius: 40%;
+        margin-inline: auto;
+        margin-bottom: 1rem;
+        filter: drop-shadow(10px 10px 20px rgba(0, 0, 0, 0.3));
+    }
+
+    .special__card h4 {
+        margin-bottom: .5rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-dark);
+    }
+
+    .special__card p {
+        margin-bottom: .5rem;
+        color: var(--text-light);
+        line-height: 1.75rem;
+    }
+
+    .special__ratings {
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        color: goldenrod;
+    }
+
+    .special__footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .special__footer .price {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--text-dark);
+    }
+
+    .btn4 {
+        width: 130px;
+        height: 50px;
+        background: transparent;
+        border: 2px solid black;
+        outline: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1.1em;
+        color: black;
+        font-weight: 500;
+        transition: .5s;
+    }
+
+    .btn4:hover {
+        background: black;
+        color: #fff;
+    }
+
+    @media(width > 540px) {
+        .special__grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media(width>768px) {
+        .special__grid {
+            grid-template-columns: repeat(3, 1fr)
+        }
+    }
+
+    @media(width>1024px) {
+        .special__grid {
+            gap: 2rem;
+        }
+
+        .special__card {
+            padding: 2rem;
+            border-radius: 3rem;
+        }
+    }
+
+    .section__container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 5rem 1rem;
+    }
+
+    .special__container :is(.section__header, .section__description) {
+        max-width: 600px;
+        margin-inline: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .special__container .section__header h2 {
+        font-size: 3rem;
+    }
+    .section__header {
+        margin-bottom: 1rem;
+        font-size: 2.5rem;
+        font-weight: 700;
+        line-height: 3rem;
+        color: var(--text-dark);
+        text-align: center;
+    }
+    .special__container .section__header h2 {
+        font-size: 3rem;
+    }
+</style>
+<section class="section__container special__container" id="special">
+    <h1 class="section__header">Interview Handbooks</h1>
+    <div class="special__grid">
+        <div class="special__card">
+            <img src="{% static 'Untitled13.png' %}" alt="">
+            <h4>Niagara College</h4>
+            <p>
+                Interview Handbook provided by Niagara College
+            </p>
+            
+            <div class="special__footer">
+                <a href="{% static 'resources/books/Interviewin Guide niagra college.pdf' %}"class="btn4" style="display: flex; align-items: center; justify-content: center; text-decoration: none;" >Open</a> 
+            </div>
+        </div>
+        <div class="special__card">
+            <img src="{% static 'Untitled14.png' %}" alt="">
+            <h4>University of Talahassee</h4>
+            <p>
+                Interview Handbook provided by University of Talahassee
+            </p>
+            
+            <div class="special__footer">
+                <a href="{% static 'resources/books/Interview-Handbook uni of tallahassee.pdf' %}"class="btn4" style="display: flex; align-items: center; justify-content: center; text-decoration: none;" >Open</a> 
+            </div>
+        </div>
+        <div class="special__card">
+            <img src="{% static 'Untitled15.png' %}" alt="">
+            <h4>CCS University</h4>
+            <p>
+                Interview Handbook provided by CCS University
+            </p>
+            
+            <div class="special__footer">
+                <a href="{% static 'resources/books/Interview-Skills ccs university.pdf' %}"class="btn4" style="display: flex; align-items: center; justify-content: center; text-decoration: none;" >Open</a> 
+            </div>
+        </div>
+        <div class="special__card">
+            <img src="{% static 'Untitled16.png' %}" alt="">
+            <h4>Cornell College</h4>
+            <p>
+                Interview Handbook provided by Cornell College
+            </p>
+            
+            <div class="special__footer">
+                <a href="{% static 'resources/books/Interview Success Handbook 6.26.18 cornell college.pdf' %}"class="btn4" style="display: flex; align-items: center; justify-content: center; text-decoration: none;" >Open</a> 
+            </div>
+        </div>
+        <div class="special__card">
+            <img src="{% static '30.jpg' %}" alt="">
+            <h4>Jeffrey G. Allen</h4>
+            <p>
+                Interview Handbook provided by Jeffrey G. Allen
+            </p>
+            
+            <div class="special__footer">
+                <a href="{% static 'resources/books/The Complete Q&A Job Interview Book 4th Ed - Jeffrey G. Allen.pdf' %}"class="btn4" style="display: flex; align-items: center; justify-content: center; text-decoration: none;" >Open</a> 
+            </div>
+        </div>
+        <div class="special__card">
+            <img src="{% static 'kobu-agency-7okkFhxrxNw-unsplash(1).jpg' %}" alt="">
+            <h4>Robert Walters New Zealand</h4>
+            <p>
+                Interview Handbook provided by Robert Walters New Zealand
+            </p>
+            
+            <div class="special__footer">
+                <a href="{% static 'resources/books/Interview-guide-web robert walters nz.pdf' %}"class="btn4" style="display: flex; align-items: center; justify-content: center; text-decoration: none;" >Open</a> 
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

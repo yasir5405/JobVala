@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    {% load static %}
+</head>
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+    * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #fff;
+            background-size: cover;
+            background-position: center;
+        }
+        html,
+        body {
+            scroll-behavior: smooth;
+        }
+    header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 2px 100px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 99;
+    }
+    .logo {
+            font-size: 2em;
+            color: black;
+            user-select: none;
+            display: flex;
+  justify-content: center;
+  align-items: center;
+  mix-blend-mode: multiply;
+        }
+        .logo img{
+            width: 88px;
+  height: auto;
+  border-radius: 19px;
+  mix-blend-mode: multiply;
+
+        }
+</style>
+<body>
+    <header>
+        <h2 class="logo">Job <span>Vala</span> <span><img src='{% static "Designer(2).png" %}' alt=""></span></h2>
+    </header>
+    <div class="container">
+        {% block content %}{% endblock content %}
+    </div>
+</body>
+</html>

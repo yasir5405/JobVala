@@ -1,0 +1,744 @@
+{% extends 'base.html' %}
+{% block title %}Home Page{% endblock title %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jobs Listing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <!-- Chatbot -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+    <style>
+        .jobs-list-container {
+            max-width: 900px;
+            margin: 20px auto;
+            font-family: 'Poppins', sans-serif;
+            margin-left: -323px;
+        }
+        .jobs-list-container h2{
+            font-size: 30px;
+            border-left: 3px solid #023047;
+            padding-left: 20px;
+        }
+        .jobs-list-container .jobs{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 24px;
+        }
+        .jobs-list-container .jobs img{
+            width: 60px;
+        }
+        .jobs-list-container .job{
+            box-shadow: 0 4px 24px -8px rgba(2,48,71,0.2);
+            padding: 24px;
+            border-radius: 16px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            transition: all 400ms ease;
+            background: #fff;
+            width: 400px;
+        }
+        .jobs-list-container .job:hover{
+            transform: scale(1.03);
+        }
+        .jobs-list-container .open-positions{
+            position: absolute;
+            top: 40px;
+            right: 24px;
+            color: #e63946;
+        }
+        .jobs-list-container .job-title{
+            font-size: 20px;
+            padding: 10px 0;
+            margin: 0;
+            color: #023047;
+        }
+        .jobs-list-container .details{
+            margin-top: 6px;
+            font-size: 16px;
+            color: #333;
+            flex: 1;
+            line-height: 1.8;
+        }
+        .jobs-list-container .details-btn{
+            text-decoration: none;
+            border: 1px solid #023047;
+            color: #000;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+            transition: all 400ms ease;
+        }
+        .jobs-list-container .details-btn:hover{
+            background: #023047;
+            color: white;
+        }
+        @media (max-width: 940px){
+            .jobs-list-container .jobs{
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 640px){
+            .jobs-list-container .jobs{
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+        }
+        .container{
+            margin-top: 112px;
+        }
+        .search-container{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .searchbar{
+            width: 100%;
+            max-width: 500px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 60px;
+            padding: 3px 20px;
+            backdrop-filter: blur(4px) saturate(180%);
+        }
+        .searchbar input{
+            background: transparent;
+            flex: 1;
+            border: 0;
+            outline: none;
+            /* padding: 24px 20px; */
+            font-size: 20px;
+            color: #000;
+        }
+        ::placeholder{
+            color: black;
+        }
+        .searchbar button ion-icon{
+            width: 25px;
+            font-weight: 900;
+            font-size: 20px;
+        }
+        .searchbar button{
+            border: 0;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            background: transparent;
+            cursor: pointer;
+            transition: all 400ms ease;
+        }
+        .searchbar button:hover{
+            background: #023047;
+            color: #fff;
+        }
+        /* chatbot */
+        .chatbot-toggler {
+            position: fixed;
+            bottom: 30px;
+            right: 35px;
+            outline: none;
+            border: none;
+            height: 50px;
+            width: 50px;
+            display: flex;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #724ae8;
+            transition: all 0.2s ease;
+        }
+
+        body.show-chatbot .chatbot-toggler {
+            transform: rotate(90deg);
+        }
+
+        .chatbot-toggler span {
+            color: #fff;
+            position: absolute;
+        }
+
+        .chatbot-toggler span:last-child,
+        body.show-chatbot .chatbot-toggler span:first-child {
+            opacity: 0;
+        }
+
+        body.show-chatbot .chatbot-toggler span:last-child {
+            opacity: 1;
+        }
+
+        .chatbot {
+            position: fixed;
+            right: 35px;
+            bottom: 90px;
+            width: 420px;
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.5);
+            transform-origin: bottom right;
+            box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1),
+                0 32px 64px -48px rgba(0, 0, 0, 0.5);
+            transition: all 0.1s ease;
+        }
+
+        body.show-chatbot .chatbot {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+        }
+
+        .chatbot header {
+            padding: 16px 0;
+            position: relative;
+            text-align: center;
+            color: #fff;
+            background: #724ae8;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .chatbot header span {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            display: none;
+            cursor: pointer;
+            transform: translateY(-50%);
+        }
+
+        header h2 {
+            font-size: 1.4rem;
+        }
+
+        .chatbot .chatbox {
+            overflow-y: auto;
+            height: 416px;
+            padding: 30px 20px 100px;
+        }
+
+        .chatbot :where(.chatbox, textarea)::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chatbot :where(.chatbox, textarea)::-webkit-scrollbar-track {
+            background: #fff;
+            border-radius: 25px;
+        }
+
+        .chatbot :where(.chatbox, textarea)::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 25px;
+        }
+
+        .chatbox .chat {
+            display: flex;
+            list-style: none;
+        }
+
+        .chatbox .outgoing {
+            margin: 20px 0;
+            justify-content: flex-end;
+        }
+
+        .chatbox .incoming span {
+            width: 32px;
+            height: 32px;
+            color: #fff;
+            cursor: default;
+            text-align: center;
+            line-height: 32px;
+            align-self: flex-end;
+            background: #724ae8;
+            border-radius: 4px;
+            margin: 0 10px 7px 0;
+        }
+
+        .chatbox .chat p {
+            white-space: pre-wrap;
+            padding: 12px 16px;
+            border-radius: 10px 10px 0 10px;
+            max-width: 75%;
+            color: #fff;
+            font-size: 0.95rem;
+            background: #724ae8;
+        }
+
+        .chatbox .incoming p {
+            border-radius: 10px 10px 10px 0;
+        }
+
+        .chatbox .chat p.error {
+            color: #721c24;
+            background: #f8d7da;
+        }
+
+        .chatbox .incoming p {
+            color: #000;
+            background: #f2f2f2;
+        }
+
+        .chatbot .chat-input {
+            display: flex;
+            gap: 5px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: #fff;
+            padding: 3px 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        .chat-input textarea {
+            height: 55px;
+            width: 100%;
+            border: none;
+            outline: none;
+            resize: none;
+            max-height: 180px;
+            padding: 15px 15px 15px 0;
+            font-size: 0.95rem;
+        }
+
+        .chat-input span {
+            align-self: flex-end;
+            color: #724ae8;
+            cursor: pointer;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            visibility: hidden;
+            font-size: 1.35rem;
+        }
+
+        .chat-input textarea:valid~span {
+            visibility: visible;
+        }
+        /* pagination */
+        .pagination {
+  display: inline-block;
+  margin-left: 118px
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+
+        @media (max-width: 490px) {
+            .chatbot-toggler {
+                right: 20px;
+                bottom: 20px;
+            }
+
+            .chatbot {
+                right: 0;
+                bottom: 0;
+                height: 100%;
+                border-radius: 0;
+                width: 100%;
+            }
+
+            .chatbot .chatbox {
+                height: 90%;
+                padding: 25px 15px 100px;
+            }
+
+            .chatbot .chat-input {
+                padding: 5px 15px;
+            }
+
+            .chatbot header span {
+                display: block;
+            }
+        }
+        /* Search bar */
+        .group {
+ display: flex;
+ line-height: 28px;
+ align-items: center;
+ position: relative;
+ /* max-width: 303px; */
+ width: 477px;
+}
+
+.input {
+ width: 100%;
+ height: 40px;
+ line-height: 28px;
+ padding: 0 1rem;
+ padding-left: 2.5rem;
+ border: 2px solid transparent;
+ border-radius: 8px;
+ outline: none;
+ background-color: #f3f3f4;
+ color: #0d0c22;
+ transition: .3s ease;
+}
+
+.input::placeholder {
+ color: #9e9ea7;
+}
+
+ .input:focus, input:hover {
+ outline: none;
+ border-color: rgba(234,76,137,0.4);
+ background-color: #fff;
+ box-shadow: 0 0 0 4px rgb(234 76 137 / 10%);
+}
+
+ .icon {
+ position: absolute;
+ left: 1rem;
+ fill: #9e9ea7;
+ width: 1rem;
+ height: 1rem;
+ top: .8rem;
+}
+nav {
+  &.primary-navigation {
+    margin: 0 auto;
+    display: block; 
+    text-align: center;
+    font-size: 16px;
+
+    ul li {
+      list-style: none;
+      margin: 0 auto;
+      border-left: 2px solid #3ca0e7;
+      display: inline-block;
+      padding: 0 30px;
+      position: relative;
+      text-decoration: none;
+      text-align: center;
+      font-family: arvo;
+      z-index: 100;
+      
+    }
+
+    li a {
+      color: black;
+    }
+
+    li a:hover {
+      color: #3ca0e7;
+    }
+
+    li:hover {
+      cursor: pointer;
+    }
+
+    ul li ul {
+      visibility: hidden;
+      opacity: 0;
+      position: absolute;
+    padding-left: 0;
+      left: 0;
+      display: none;
+      background: white;
+    }
+
+    ul li:hover > ul,
+    ul li ul:hover {
+      visibility: visible;
+      opacity: 1;
+      display: block;
+      min-width: 250px;
+      text-align: left;
+      padding-top: 20px;
+      box-shadow: 0px 3px 5px -1px #ccc;
+      height: 220px;
+      overflow-y: scroll;
+    }
+
+    ul li ul li {
+      clear: both;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 20px;
+      border-style: none;
+    }
+
+    ul li ul li a:hover {
+      padding-left: 10px;
+      border-left: 2px solid #3ca0e7;
+      transition: all 0.3s ease;
+    }
+  }
+}
+
+a {
+
+    text-decoration: none;
+
+    
+ 
+}
+
+ ul li ul li a { transition: all 0.5s ease; }
+
+
+    .search-bar-container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 580px;
+        gap: 18px;
+    }
+
+
+
+
+
+
+    </style>
+</head>
+
+<body>
+    <div class="search-bar-container">
+        
+<link href="https://fonts.googleapis.com/css?family=Arvo&display=swap" rel="stylesheet">
+
+    <form method="get">
+        <nav role="navigation" class="primary-navigation">
+            <ul>
+              <li><a href="#">Country codes&dtrif;</a>
+                <ul class="dropdown">
+                  <li><a href="#">Austria: at</a></li>
+                  <li><a href="#">Australia: au</a></li>
+                  <li><a href="#">Belgium: be</a></li>
+                  <li><a href="#">Brazil: br</a></li>
+                  <li><a href="#">Canada: ca</a></li>
+                  <li><a href="#">Switzerland: ch</a></li>
+                  <li><a href="#">Germany: de</a></li>
+                  <li><a href="#">Spain: es</a></li>
+                  <li><a href="#">France: fr</a></li>
+                  <li><a href="#">United Kingdom: gb</a></li>
+                  <li><a href="#">India: in</a></li>
+                  <li><a href="#">Italy: it</a></li>
+                  <li><a href="#">Mexico: mx</a></li>
+                  <li><a href="#">Netherlands: nl</a></li>
+                  <li><a href="#">New Zealand: nz</a></li>
+                  <li><a href="#">Poland: pl</a></li>
+                  <li><a href="#">Singapore: sg</a></li>
+                  <li><a href="#">United States: us</a></li>
+                  <li><a href="#">South Africa: za</a></li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+          
+    </form>
+<!-- search bar -->
+    <div class="group">
+        <form method="get" action="{% url 'country' %}">
+            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><g><path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path></g></svg>
+        <input name="country" id="country" placeholder="Enter job location" type="search" class="input">
+        </form>
+    </div>
+        <div class="group">
+            <form method="get" action="{% url 'category' %}">
+                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><g><path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path></g></svg>
+            <input name="category" id="category" placeholder="Enter job category" type="search" class="input">
+            </form>
+        </div>
+    </div>
+
+    {% if results|length < 1 %}
+    <p>No search results</p>
+    {% endif %}
+      
+    <div class="jobs-list-container">
+        <!-- <h2>5 jobs</h2> -->
+        <div class="jobs">
+            {% for i in results %}
+            <div class="job">
+                <img src="{% static 'software-engineer.svg' %}" alt="">
+                <h3 class="job-title">Role: {{i.title}}</h3>
+                <div class="details">
+                    Location:   {{i.location.display_name}}
+                </div>
+                <div class="details">
+                    {% if i.salary_max == None %}
+                    Salary:  Not disclosed
+                    {% else %}
+                    Salary:    {{i.salary_max}} $
+                    {% endif %}
+                </div>
+                <div class="details">
+                    Posted On:    {{i.created}}
+                </div>
+                <!-- <div class="details">
+                    {{i.description}}
+                </div> -->
+                <a href="{{ i.redirect_url }}" target="_blank" class="details-btn">Apply Now!</a>
+                <span class="open-positions">{{ i.company.display_name }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <!-- pagination -->
+    <div class="pagination">
+        {% if results.has_previous %}
+        <a href="/home/?page={{results.previous_page_number}}">&laquo;</a>
+        {% endif %}
+        {% for n in totalPagelist %}
+        <a href="/home/?page={{n}}">{{n}}</a>
+        {% endfor %}
+        {% if results.has_next %}
+        <a href="/home/?page={{results.next_page_number}}">&raquo;</a>
+        <a href="/home/?page={{lastpage}}">last</a>
+        {% endif %}
+      </div>
+
+
+
+    <!-- Chatbot -->
+    <button class="chatbot-toggler">
+        <span class="material-symbols-rounded">mode_comment</span>
+        <span class="material-symbols-outlined">close</span>
+    </button>
+    <div class="chatbot">
+        <header style="display: flex; align-items: center; justify-content: center;">
+            <h2>JobBot</h2>
+            <span class="close-btn material-symbols-outlined">close</span>
+        </header>
+        <ul class="chatbox">
+            <li class="chat incoming">
+                <span class="material-symbols-outlined">smart_toy</span>
+                <p>Hi there 👋<br>How can I help you today?</p>
+            </li>
+        </ul>
+        <div class="chat-input">
+            <textarea placeholder="Enter a message..." spellcheck="false" required></textarea>
+            <span id="send-btn" class="material-symbols-rounded">send</span>
+        </div>
+    </div>
+
+
+
+    <script>
+        //Chatbot
+        const chatbotToggler = document.querySelector(".chatbot-toggler");
+        const closeBtn = document.querySelector(".close-btn");
+        const chatbox = document.querySelector(".chatbox");
+        const chatInput = document.querySelector(".chat-input textarea");
+        const sendChatBtn = document.querySelector(".chat-input span");
+
+        let userMessage = null; // Variable to store user's message
+        const API_KEY = "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"; // Paste your API key here
+        const inputInitHeight = chatInput.scrollHeight;
+
+        const createChatLi = (message, className) => {
+            // Create a chat <li> element with passed message and className
+            const chatLi = document.createElement("li");
+            chatLi.classList.add("chat", `${className}`);
+            let chatContent = className === "outgoing" ? `<p></p>` : `<span class="material-symbols-outlined">smart_toy</span><p></p>`;
+            chatLi.innerHTML = chatContent;
+            chatLi.querySelector("p").textContent = message;
+            return chatLi; // return chat <li> element
+        }
+
+        const generateResponse = (chatElement) => {
+            const API_URL = "https://api.openai.com/v1/chat/completions";
+            const messageElement = chatElement.querySelector("p");
+
+            // Define the properties and message for the API request
+            const requestOptions = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: "gpt-3.5-turbo",
+                    messages: [{ role: "user", content: userMessage }],
+                })
+            }
+
+            // Send POST request to API, get response and set the reponse as paragraph text
+            fetch(API_URL, requestOptions).then(res => res.json()).then(data => {
+                messageElement.textContent = data.choices[0].message.content.trim();
+            }).catch(() => {
+                messageElement.classList.add("error");
+                messageElement.textContent = "Oops! Something went wrong. Please try again.";
+            }).finally(() => chatbox.scrollTo(0, chatbox.scrollHeight));
+        }
+
+        const handleChat = () => {
+            userMessage = chatInput.value.trim(); // Get user entered message and remove extra whitespace
+            if (!userMessage) return;
+
+            // Clear the input textarea and set its height to default
+            chatInput.value = "";
+            chatInput.style.height = `${inputInitHeight}px`;
+
+            // Append the user's message to the chatbox
+            chatbox.appendChild(createChatLi(userMessage, "outgoing"));
+            chatbox.scrollTo(0, chatbox.scrollHeight);
+
+            setTimeout(() => {
+                // Display "Thinking..." message while waiting for the response
+                const incomingChatLi = createChatLi("Thinking...", "incoming");
+                chatbox.appendChild(incomingChatLi);
+                chatbox.scrollTo(0, chatbox.scrollHeight);
+                generateResponse(incomingChatLi);
+            }, 600);
+        }
+
+        chatInput.addEventListener("input", () => {
+            // Adjust the height of the input textarea based on its content
+            chatInput.style.height = `${inputInitHeight}px`;
+            chatInput.style.height = `${chatInput.scrollHeight}px`;
+        });
+
+        chatInput.addEventListener("keydown", (e) => {
+            // If Enter key is pressed without Shift key and the window 
+            // width is greater than 800px, handle the chat
+            if (e.key === "Enter" && !e.shiftKey && window.innerWidth > 800) {
+                e.preventDefault();
+                handleChat();
+            }
+        });
+
+        sendChatBtn.addEventListener("click", handleChat);
+        closeBtn.addEventListener("click", () => document.body.classList.remove("show-chatbot"));
+        chatbotToggler.addEventListener("click", () => document.body.classList.toggle("show-chatbot"));
+
+    </script>
+    
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    
+</body>
+
+
+</html>
+{% endblock content %}
