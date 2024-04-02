@@ -1322,7 +1322,7 @@
         <div class="special__grid">
             <div class="special__card">
                 <img src="{% static 'kobu-agency-7okkFhxrxNw-unsplash(1).jpg' %}" alt="">
-                <h4>Results from top boards</h4>
+                <h4>Jobs from top boards</h4>
                 <p>
                     The job listing of top job boards listed on our website, saving you time so you don't have to search
                     on those websites individually
@@ -1337,10 +1337,9 @@
             </div>
             <div class="special__card">
                 <img src="{% static 'marvin-meyer-SYTO3xs06fU-unsplash.jpg' %}" alt="">
-                <h4>Highly rated by critiques</h4>
+                <h4>Resources from top institutes</h4>
                 <p>
-                    We have been rated as one of the top job board platform by many well renowned critiques and we have
-                    been featured on many magazines!
+                    We provide you with the best interview preparation resources form the top univesities of the world, that will help you ace your next interview!
                 </p>
                 <div class="special__ratings">
                     <span><ion-icon name="star"></ion-icon></span>
@@ -1423,7 +1422,7 @@
             <div class="chef__content">
                 <h2 class="section__header">From the best of the world</h2>
                 <p class="section__description">
-                    Our job boards has multiple jobs offerings listed of the top companies of the planetm. We offer
+                    Our job boards has multiple jobs offerings listed of the top companies of the world. We offer
                     great help if you want to join a big tech company.
                 </p>
                 <ul class="chef__list">
@@ -1509,7 +1508,6 @@
             <div class="footer__col">
                 <h4>Product</h4>
                 <ul class="footer__links">
-                    <li><a href="/resume">Resume Maker</a></li>
                     <li><a href="/resources">Resources</a></li>
                 </ul>
             </div>
@@ -1658,91 +1656,79 @@
 
         //Chatbot
         const chatbotToggler = document.querySelector(".chatbot-toggler");
-        const closeBtn = document.querySelector(".close-btn");
-        const chatbox = document.querySelector(".chatbox");
-        const chatInput = document.querySelector(".chat-input textarea");
-        const sendChatBtn = document.querySelector(".chat-input span");
-
-        let userMessage = null; // Variable to store user's message
-        const API_KEY = "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"; // Paste your API key here
-        const inputInitHeight = chatInput.scrollHeight;
-
-        const createChatLi = (message, className) => {
-            // Create a chat <li> element with passed message and className
-            const chatLi = document.createElement("li");
-            chatLi.classList.add("chat", `${className}`);
-            let chatContent = className === "outgoing" ? `<p></p>` : `<span class="material-symbols-outlined">smart_toy</span><p></p>`;
-            chatLi.innerHTML = chatContent;
-            chatLi.querySelector("p").textContent = message;
-            return chatLi; // return chat <li> element
-        }
-
-        const generateResponse = (chatElement) => {
-            const API_URL = "https://api.openai.com/v1/chat/completions";
-            const messageElement = chatElement.querySelector("p");
-
-            // Define the properties and message for the API request
-            const requestOptions = {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${API_KEY}`
-                },
-                body: JSON.stringify({
-                    model: "gpt-3.5-turbo",
-                    messages: [{ role: "user", content: userMessage }],
-                })
+            const closeBtn = document.querySelector(".close-btn");
+            const chatbox = document.querySelector(".chatbox");
+            const chatInput = document.querySelector(".chat-input textarea");
+            const sendChatBtn = document.querySelector(".chat-input span");
+            let userMessage = null; // Variable to store user's message
+            const API_KEY = "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"; // Paste your API key here
+            const inputInitHeight = chatInput.scrollHeight;
+            const createChatLi = (message, className) => {
+                // Create a chat <li> element with passed message and className
+                const chatLi = document.createElement("li");
+                chatLi.classList.add("chat", `${className}`);
+                let chatContent = className === "outgoing" ? `<p></p>` : `<span class="material-symbols-outlined">smart_toy</span><p></p>`;
+                chatLi.innerHTML = chatContent;
+                chatLi.querySelector("p").textContent = message;
+                return chatLi; // return chat <li> element
             }
-
-            // Send POST request to API, get response and set the reponse as paragraph text
-            fetch(API_URL, requestOptions).then(res => res.json()).then(data => {
-                messageElement.textContent = data.choices[0].message.content.trim();
-            }).catch(() => {
-                messageElement.classList.add("error");
-                messageElement.textContent = "Oops! Something went wrong. Please try again.";
-            }).finally(() => chatbox.scrollTo(0, chatbox.scrollHeight));
-        }
-
-        const handleChat = () => {
-            userMessage = chatInput.value.trim(); // Get user entered message and remove extra whitespace
-            if (!userMessage) return;
-
-            // Clear the input textarea and set its height to default
-            chatInput.value = "";
-            chatInput.style.height = `${inputInitHeight}px`;
-
-            // Append the user's message to the chatbox
-            chatbox.appendChild(createChatLi(userMessage, "outgoing"));
-            chatbox.scrollTo(0, chatbox.scrollHeight);
-
-            setTimeout(() => {
-                // Display "Thinking..." message while waiting for the response
-                const incomingChatLi = createChatLi("Thinking...", "incoming");
-                chatbox.appendChild(incomingChatLi);
+            const generateResponse = (chatElement) => {
+                const API_URL = "https://api.openai.com/v1/chat/completions";
+                const messageElement = chatElement.querySelector("p");
+                // Define the properties and message for the API request
+                const requestOptions = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: "gpt-3.5-turbo",
+                        messages: [{ role: "user", content: userMessage }],
+                    })
+                }
+                // Send POST request to API, get response and set the reponse as paragraph text
+                fetch(API_URL, requestOptions).then(res => res.json()).then(data => {
+                    messageElement.textContent = data.choices[0].message.content.trim();
+                }).catch(() => {
+                    messageElement.classList.add("error");
+                    messageElement.textContent = "Oops! Something went wrong. Please try again.";
+                }).finally(() => chatbox.scrollTo(0, chatbox.scrollHeight));
+            }
+            const handleChat = () => {
+                userMessage = chatInput.value.trim(); // Get user entered message and remove extra whitespace
+                if (!userMessage) return;
+                // Clear the input textarea and set its height to default
+                chatInput.value = "";
+                chatInput.style.height = `${inputInitHeight}px`;
+                // Append the user's message to the chatbox
+                chatbox.appendChild(createChatLi(userMessage, "outgoing"));
                 chatbox.scrollTo(0, chatbox.scrollHeight);
-                generateResponse(incomingChatLi);
-            }, 600);
-        }
 
-        chatInput.addEventListener("input", () => {
-            // Adjust the height of the input textarea based on its content
-            chatInput.style.height = `${inputInitHeight}px`;
-            chatInput.style.height = `${chatInput.scrollHeight}px`;
-        });
-
-        chatInput.addEventListener("keydown", (e) => {
-            // If Enter key is pressed without Shift key and the window 
-            // width is greater than 800px, handle the chat
-            if (e.key === "Enter" && !e.shiftKey && window.innerWidth > 800) {
-                e.preventDefault();
-                handleChat();
+                setTimeout(() => {
+                    // Display "Thinking..." message while waiting for the response
+                    const incomingChatLi = createChatLi("Thinking...", "incoming");
+                    chatbox.appendChild(incomingChatLi);
+                    chatbox.scrollTo(0, chatbox.scrollHeight);
+                    generateResponse(incomingChatLi);
+                }, 600);
             }
-        });
-
-        sendChatBtn.addEventListener("click", handleChat);
-        closeBtn.addEventListener("click", () => document.body.classList.remove("show-chatbot"));
-        chatbotToggler.addEventListener("click", () => document.body.classList.toggle("show-chatbot"));
-
+            chatInput.addEventListener("input", () => {
+                // Adjust the height of the input textarea based on its content
+                chatInput.style.height = `${inputInitHeight}px`;
+                chatInput.style.height = `${chatInput.scrollHeight}px`;
+            });
+            chatInput.addEventListener("keydown", (e) => {
+                // If Enter key is pressed without Shift key and the window 
+                // width is greater than 800px, handle the chat
+                if (e.key === "Enter" && !e.shiftKey && window.innerWidth > 800) {
+                    e.preventDefault();
+                    handleChat();
+                }
+            });
+            sendChatBtn.addEventListener("click", handleChat);
+            closeBtn.addEventListener("click", () => document.body.classList.remove("show-chatbot"));
+            chatbotToggler.addEventListener("click", () => document.body.classList.toggle("show-chatbot"));
 
     </script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

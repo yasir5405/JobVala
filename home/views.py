@@ -24,7 +24,7 @@ API_ID = '38a42abb'
 global results
 # Create your views here.
 def index(request):
-    url = f'https://api.adzuna.com/v1/api/jobs/gb/search/1?app_id={API_ID}&app_key={API_KEY}&results_per_page=100'
+    url = f'https://api.adzuna.com/v1/api/jobs/in/search/1?app_id={API_ID}&app_key={API_KEY}&results_per_page=100'
     response = requests.get(url)
     data = response.json()
 
@@ -41,11 +41,15 @@ def index(request):
         'lastpage':totalpage,
         'totalPagelist': [n+1 for n in range(totalpage)],
     }
-    return render(request, 'index.html', context)
+    if request.user.is_authenticated:
+        return render(request, 'index.html', context)
+    else:
+        return render(request, 'firstpage.html')
 def submitform(request):
         if request.method=="POST":
             username = request.POST.get('username')
             password = request.POST.get('pass')
+            global user
             user = authenticate(username=username, password=password)
             print(user)
             if user is not None:
